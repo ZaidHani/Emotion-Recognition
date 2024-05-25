@@ -55,14 +55,14 @@ image_classes = ['angry', 'disgust', 'fear', 'happy', 'neutral', 'sad', 'surpris
 
 try:
     img = tf.keras.utils.load_img(testing_image, target_size=(48,48), color_mode='grayscale')
-    st.image(img)
+    #st.image(img)
     img_array = keras.utils.img_to_array(img)
     img_array = keras.backend.expand_dims(img_array, 0)  # Create batch axis
     predictions = model.predict(img_array)
     fixed_predictions = predictions.astype('c')
-    st.markdown(predictions)
+    #st.markdown(predictions)
 
-    st.markdown(f'This image belongs to the class: <h1>{np.argmax(fixed_predictions[0]), image_classes[np.argmax(fixed_predictions[0])]}</h1>',
+    st.markdown(f'This image belongs to the class: <h1>{image_classes[np.argmax(fixed_predictions[0])]}</h1>',
                 unsafe_allow_html=True)
 except Exception as e:
     if str(e) in "TypeError: path should be path-like or io.BytesIO, not <class 'NoneType'>":
