@@ -48,12 +48,24 @@ model.load_weights('model_weights.h5')
 
 # set webpage
 st.title('Emotion Detiction')
-testing_image = st.camera_input('')
+testing_image = st.camera_input('Say Cheese!',)
 
-img = keras.utils.load_img(testing_image, target_size=(48,48))
-img_array = keras.utils.img_to_array(img)
-img_array = keras.backend.expand_dims(img_array, 0)  # Create batch axis
-predictions = model.predict(img_array)
-score = float(keras.backend.relu(predictions[0][0]))
-st.markdown('This image belongs to the class:',np.argmax(predictions, axis=1))
-#score
+# the classes are ordered alphbaticlly
+image_classes = ['angry', 'disgust', 'fear', 'happy', 'neutral', 'sad', 'surprise']
+
+try:
+    img = tf.keras.utils.load_img(testing_image, target_size=(48,48), color_mode='grayscale')
+    st.image(img)
+    img_array = keras.utils.img_to_array(img)
+    img_array = keras.backend.expand_dims(img_array, 0)  # Create batch axis
+    predictions = model.predict(img_array)
+    fixed_predictions = predictions.astype('c')
+    st.markdown(predictions)
+
+    st.markdown(f'This image belongs to the class: <h1>{np.argmax(fixed_predictions[0]), image_classes[np.argmax(fixed_predictions[0])]}</h1>',
+                unsafe_allow_html=True)
+except Exception as e:
+    if str(e) in "TypeError: path should be path-like or io.BytesIO, not <class 'NoneType'>":
+        pass
+    else:
+        st.markdown(e)
