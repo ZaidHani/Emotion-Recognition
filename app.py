@@ -3,7 +3,6 @@ import tensorflow as tf
 import streamlit as st
 import keras
 import numpy as np
-import cv2
 
 # load the model
 with open('final_model.json', 'r') as json_string:
